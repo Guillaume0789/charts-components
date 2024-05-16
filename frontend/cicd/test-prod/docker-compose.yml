@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+  charts-components_web:
+    image: charts-components_web:latest
+    container_name: charts-components_web   # Docker container name
+    ports:
+      - "4200:80"
+
+networks:
+  default:
+    name: charts-components_network
