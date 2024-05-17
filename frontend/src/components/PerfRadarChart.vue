@@ -29,6 +29,9 @@ const options = ref({
     toolbar: {
       show: false,
     },
+    animations: {
+      enabled: false,
+    },
   },
   plotOptions: {
     radar: {
@@ -96,7 +99,10 @@ const chart = ref(null);
  */
 
 onMounted(() => {
-  chart.value = new ApexCharts(document.getElementById("radar-chart"), options.value);
+  chart.value = new ApexCharts(
+    document.getElementById("radar-chart"),
+    options.value
+  );
   chart.value.render();
 });
 

@@ -1,11 +1,19 @@
 <template>
-<div>
-  <div id="pie-chart"></div>
   <div
-    
-  >coucou</div>
-</div>
-
+    class="pie-container"
+    :style="
+      props.showLegend
+        ? 'align-items: end; width: 600px;'
+        : 'align-items: center;'
+    "
+  >
+    <div :id="props.data.title"></div>
+    <LinearHorizontalGauge
+      :value="78"
+      :showLabel="true"
+      :style="props.showLegend ? 'margin-right: 60px' : ''"
+    />
+  </div>
 </template>
 
 <script setup>
@@ -17,30 +25,47 @@ import { ref, onMounted, computed, watch } from "vue";
  */
 
 const props = defineProps({
-  data: Array,
+  data: Object,
+  showLegend: Boolean,
 });
 
 // Options utilisée par Apexcharts
 const options = ref({
   series: props.data.serie,
   chart: {
-    width: 380,
-    height: 500,
+    width: props.showLegend ? 600 : 300,
     type: "pie",
+    toolbar: {
+      show: false,
+    },
+    animations: {
+        enabled: false,
+    }
   },
   title: {
-    text: "SDC 1",
-    margin: 0,
-    align: 'center',
+    text: props.data.title,
+    align: "center",
     style: {
-      fontSize:  '20px',
+      fontSize: "20px",
     },
   },
   labels: props.data.labels,
   legend: {
-    show: false,
-    position: 'left',
-  }
+    show: props.showLegend,
+    width: 200,
+    fontSize: "20px",
+    position: "left",
+    markers: {
+      width: 30,
+      height: 20,
+      radius: 0,
+    },
+  },
+  plotOptions: {
+    pie: {
+      size: "200px",
+    },
+  },
 });
 
 const chart = ref(null);
@@ -50,24 +75,22 @@ const chart = ref(null);
  */
 
 onMounted(() => {
-  chart.value = new ApexCharts(document.getElementById("pie-chart"), options.value);
+  chart.value = new ApexCharts(
+    document.getElementById(props.data.title),
+    options.value
+  );
   chart.value.render();
 });
-
-/**
- * Fonctions
- */
-
-watch(
-  () => props.serie,
-  () => {
-    options.value = {
-      ...options.value,
-      ...{
-        series: props.serie,
-      },
-    };
-    chart.value.updateOptions(options.value);
-  }
-);
 </script>
+<style scoped>
+.pie-container {
+  display: flex;
+  flex-direction: column;
+}
+.apexcharts-legend.apx-legend-position-bottom.apexcharts-align-left,
+.apexcharts-legend.apx-legend-position-top.apexcharts-align-left,
+.apexcharts-legend.apx-legend-position-right,
+.apexcharts-legend.apx-legend-position-left {
+  justify-content: center !important;
+}
+</style>
