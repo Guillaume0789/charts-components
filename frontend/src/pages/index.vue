@@ -13,9 +13,14 @@
       <DcfPieDdc :data="data3" :showLegend="true"/>
     </v-row>
     <v-row class="my-8" justify="center">
-      <LinearVerticalGauge :value="60" :invert="false" class="mx-5"/>
-      <LinearVerticalGauge :value="50" :invert="true"/>
+      <LinearVerticalGauge :value="10" :invert="false" class="mx-5"/>
+      <LinearVerticalGauge :value="12" :invert="true"/>
     </v-row>
+    <v-row class="my-8" justify="center">
+      <DdcChart/>
+    </v-row>
+
+    
   </v-container>
 </template>
 
